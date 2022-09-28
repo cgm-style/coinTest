@@ -1,5 +1,4 @@
-import Button from "./Button";
-import titleStyled from "./App.module.css";
+import titleStyled from "./App.modules.css";
 import { useState, useEffect } from "react";
 
 function App() {

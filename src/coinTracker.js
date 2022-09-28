@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
+import styles from "./App.module.css";
+import "./App.css";
 
 function CoinTracker() {
   const [loading, setLoading] = useState(true);
   const [coins, setCoins] = useState([]);
   const [money, setmoney] = useState("");
+  const [mykrmoney, setmyKrmoney] = useState("");
   const [changePrice, setChangePrice] = useState("");
   useEffect(() => {
+    // coin api 불러오기
     fetch("https://api.coinpaprika.com/v1/tickers")
       .then((response) => response.json())
       .then((json) => {
@@ -13,9 +17,18 @@ function CoinTracker() {
         setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    // 환율 api 불러오기
+    fetch(
+      "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
+    )
+      .then((moneydata) => moneydata.json())
+      .then((json) => {
+        setmyKrmoney(json[0].basePrice);
+      });
+  }, []);
   function ChangeBayCoin({ moneyprice }) {
     return coins.map((coin, keys) => {
-      console.log(coin);
       if (moneyprice === true) {
         moneyprice = coin.quotes.USD.price * coin.quotes.USD.price;
       } else if (!money) {
@@ -38,24 +51,33 @@ function CoinTracker() {
   };
   return (
     <div>
-      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-      <div>
-        <h2>My Money! {!money ? "" : `i have ${money}`}</h2>
-        <form onSubmit={priceCheck}>
-          <input type="text" placeholder="100"></input>
-        </form>
+      <div className={styles.bg}></div>
+      <div className={styles.inner}>
+        <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+        <div>
+          <h2>
+            {!money
+              ? ""
+              : ` My Money! : ${money.toLocaleString("en")}Dollar / KRW :${(
+                  money * mykrmoney
+                ).toLocaleString("ko-KR")}`}
+          </h2>
+          <form onSubmit={priceCheck}>
+            -<input type="text" placeholder="enter your money"></input>-
+          </form>
+        </div>
+        {loading ? (
+          <strong>Loading...</strong>
+        ) : (
+          <ul>
+            {!changePrice ? (
+              <ChangeBayCoin moneyprice={true} />
+            ) : (
+              <ChangeBayCoin moneyprice={money} />
+            )}
+          </ul>
+        )}
       </div>
-      {loading ? (
-        <strong>Loading...</strong>
-      ) : (
-        <ul>
-          {!changePrice ? (
-            <ChangeBayCoin moneyprice={true} />
-          ) : (
-            <ChangeBayCoin moneyprice={money} />
-          )}
-        </ul>
-      )}
     </div>
   );
 }

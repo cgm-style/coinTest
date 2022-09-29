@@ -36,6 +36,7 @@ function CoinTracker() {
       }
       return (
         <li key={keys}>
+          {!changePrice ? "coin price : " : "you can buy : "}
           {coin.name}({coin.symbol}):
           {Number(moneyprice) / coin.quotes.USD.price}
         </li>

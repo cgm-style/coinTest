@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/coinTest/static/css/main.abbfedd8.css",
+    "main.js": "/coinTest/static/js/main.ec8ab6f9.js",
+    "index.html": "/coinTest/index.html",
+    "main.abbfedd8.css.map": "/coinTest/static/css/main.abbfedd8.css.map",
+    "main.ec8ab6f9.js.map": "/coinTest/static/js/main.ec8ab6f9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.abbfedd8.css",
+    "static/js/main.ec8ab6f9.js"
+  ]
+}
